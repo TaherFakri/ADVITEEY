@@ -2,6 +2,8 @@ import { Toaster } from "@/components/ui/sonner";
 import { VlyToolbar } from "../vly-toolbar-readonly.tsx";
 import { InstrumentationProvider } from "@/instrumentation.tsx";
 import AuthPage from "@/pages/Auth.tsx";
+import AlertsPage from "@/pages/Alerts.tsx";
+import AnalyticsPage from "@/pages/Analytics.tsx";
 import { ConvexAuthProvider } from "@convex-dev/auth/react";
 import { ConvexReactClient } from "convex/react";
 import { StrictMode, useEffect } from "react";
@@ -50,6 +52,8 @@ createRoot(document.getElementById("root")!).render(
             <Route path="/" element={<Landing />} />
             <Route path="/auth" element={<AuthPage redirectAfterAuth="/dashboard" />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/alerts" element={<AlertsPage />} />
+            <Route path="/analytics" element={<AnalyticsPage />} />
             <Route path="/student/:studentId" element={<StudentDetail />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

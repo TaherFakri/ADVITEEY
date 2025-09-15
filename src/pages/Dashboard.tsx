@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { AlertTriangle, Users, TrendingUp, Bell, BookOpen, GraduationCap } from "lucide-react";
+import { AlertTriangle, Users, TrendingUp, Bell, BookOpen, GraduationCap, Info } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
@@ -30,6 +30,7 @@ export default function Dashboard() {
   const riskDistribution = useQuery(api.students.getRiskDistribution);
   const alerts = useQuery(api.alerts.getAlerts, { isRead: false });
   const generateSampleData = useMutation(api.sampleData.generateSampleData);
+  const generateGuestSampleData = useMutation(api.sampleData.generateGuestSampleData);
   const calculateAllRiskScores = useMutation(api.predictions.calculateAllRiskScores);
 
   useEffect(() => {
@@ -59,6 +60,15 @@ export default function Dashboard() {
       toast.success("Sample data generated successfully!");
     } catch (error) {
       toast.error("Failed to generate sample data");
+    }
+  };
+
+  const handleGenerateGuestSample = async () => {
+    try {
+      await generateGuestSampleData();
+      toast.success("Guest sample data loaded!");
+    } catch (e) {
+      toast.error("Failed to load guest sample data");
     }
   };
 
@@ -225,6 +235,36 @@ export default function Dashboard() {
                   >
                     <GraduationCap className="mr-2 h-4 w-4" />
                     Calculate Risk Scores
+                  </Button>
+                </CardContent>
+              </Card>
+            </motion.div>
+          )}
+
+          {/* Guest Sample Data Helper (for non-admins) */}
+          {user.role !== "admin" && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.55 }}
+              className="mb-8"
+            >
+              <Card className="glass rounded-2xl border-0">
+                <CardHeader>
+                  <CardTitle className="text-white flex items-center gap-2">
+                    <Info className="h-4 w-4 text-primary" />
+                    Need data to explore?
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="flex flex-col sm:flex-row gap-4 sm:items-center sm:justify-between">
+                  <p className="text-white/80">
+                    Load a small sample dataset to explore the dashboard without admin access.
+                  </p>
+                  <Button
+                    onClick={handleGenerateGuestSample}
+                    className="bg-primary/20 hover:bg-primary/30 text-white border border-primary/30"
+                  >
+                    Load Guest Sample Data
                   </Button>
                 </CardContent>
               </Card>
