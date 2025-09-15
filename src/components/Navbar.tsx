@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/use-auth";
-import { Bell, LogOut, User, Home, BarChart3 } from "lucide-react";
+import { Bell, LogOut, User, Home, BarChart3, Menu } from "lucide-react";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { useNavigate, useLocation } from "react-router";
 import { motion } from "framer-motion";
 
@@ -39,6 +40,63 @@ export function Navbar() {
             </span>
           </div>
 
+          {/* Mobile Menu */}
+          <div className="md:hidden">
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="ghost" className="text-white hover:bg-white/10">
+                  <Menu className="h-5 w-5" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="left" className="glass-strong border-white/20">
+                <SheetHeader>
+                  <SheetTitle className="text-white">Menu</SheetTitle>
+                </SheetHeader>
+                <div className="mt-4 space-y-2">
+                  {navItems.map((item) => {
+                    const Icon = item.icon;
+                    const isActive = location.pathname === item.path;
+                    return (
+                      <Button
+                        key={item.path}
+                        variant="ghost"
+                        className={`w-full justify-start text-white hover:bg-white/10 ${isActive ? "bg-white/20" : ""}`}
+                        onClick={() => navigate(item.path)}
+                      >
+                        <Icon className="mr-2 h-4 w-4" />
+                        {item.label}
+                      </Button>
+                    );
+                  })}
+                </div>
+                <div className="mt-6 border-t border-white/20 pt-4">
+                  <div className="flex items-center justify-between text-white mb-2">
+                    <div className="flex items-center space-x-2">
+                      <User className="h-4 w-4" />
+                      <span className="text-sm">
+                        {user?.name || user?.email || "User"}
+                      </span>
+                    </div>
+                    {user?.role && (
+                      <span className="text-xs bg-white/20 px-2 py-1 rounded-full capitalize">
+                        {user.role}
+                      </span>
+                    )}
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={handleSignOut}
+                    className="w-full text-white hover:bg-white/10"
+                  >
+                    <LogOut className="h-4 w-4 mr-2" />
+                    Sign Out
+                  </Button>
+                </div>
+              </SheetContent>
+            </Sheet>
+          </div>
+
           {/* Navigation Links */}
           <div className="hidden md:flex items-center space-x-1">
             {navItems.map((item) => {
@@ -62,7 +120,7 @@ export function Navbar() {
           </div>
 
           {/* User Menu */}
-          <div className="flex items-center space-x-4">
+          <div className="hidden md:flex items-center space-x-4">
             <div className="flex items-center space-x-2 text-white">
               <User className="h-4 w-4" />
               <span className="text-sm">
