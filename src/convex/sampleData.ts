@@ -91,6 +91,21 @@ export const generateGuestSampleData = mutation({
       const feeStatus = feeStatuses[Math.floor(Math.random() * feeStatuses.length)];
       const feeDueDays = feeStatus === "overdue" ? Math.floor(Math.random() * 60) + 1 : 0;
 
+      // Compute risk score and level (same logic as predictions)
+      let riskScore = 0;
+      const attendanceRisk = Math.max(0, (80 - attendancePercentage) / 80);
+      riskScore += attendanceRisk * 0.4;
+      const gpaRisk = Math.max(0, (3.0 - gpa) / 3.0);
+      riskScore += gpaRisk * 0.3;
+      const feeRisk = feeStatus === "overdue" ? 1 : feeStatus === "pending" ? 0.5 : 0;
+      riskScore += feeRisk * 0.2;
+      const trendRisk = gpaTrend === "decreasing" ? 1 : gpaTrend === "stable" ? 0.3 : 0;
+      riskScore += trendRisk * 0.1;
+      riskScore = Math.min(1, Math.max(0, riskScore));
+      const riskLevel: "low" | "medium" | "high" =
+        riskScore < 0.3 ? "low" : riskScore < 0.7 ? "medium" : "high";
+
+      // Insert student with risk fields
       await ctx.db.insert("students", {
         studentId,
         name,
@@ -103,8 +118,38 @@ export const generateGuestSampleData = mutation({
         gpaTrend,
         feeStatus,
         feeDueDays,
+        riskScore,
+        riskLevel,
         lastUpdated: Date.now(),
       });
+
+      // Store prediction document
+      await ctx.db.insert("predictions", {
+        studentId,
+        riskScore,
+        features: {
+          attendancePercentage,
+          gpa,
+          feeDueDays,
+          assessmentAverage: gpa * 25,
+          gpaTrend: gpaTrend === "increasing" ? 1 : gpaTrend === "stable" ? 0 : -1,
+        },
+        modelVersion: "v1.0",
+        predictionDate: Date.now(),
+      });
+
+      // Create alert if high risk
+      if (riskScore > 0.7) {
+        await ctx.db.insert("alerts", {
+          studentId,
+          riskScore,
+          alertType: "high_risk",
+          message: `Student ${name} has been flagged as high risk (${Math.round(riskScore * 100)}% dropout probability)`,
+          isRead: false,
+          createdAt: Date.now(),
+        });
+      }
+
       count++;
     }
 

@@ -12,6 +12,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
 import { Navbar } from "@/components/Navbar";
+import { useRef } from "react";
 
 export default function Dashboard() {
   const { isLoading, isAuthenticated, user } = useAuth();
@@ -21,6 +22,7 @@ export default function Dashboard() {
     semester: "",
     riskLevel: "",
   });
+  const autoSeededRef = useRef(false);
 
   const students = useQuery(api.students.getStudents, {
   department: filters.department || undefined,
@@ -38,6 +40,27 @@ export default function Dashboard() {
       navigate("/auth");
     }
   }, [isLoading, isAuthenticated, navigate]);
+
+  // Auto-load guest sample data if no students exist
+  useEffect(() => {
+    if (
+      !isLoading &&
+      isAuthenticated &&
+      students &&
+      students.length === 0 &&
+      !autoSeededRef.current
+    ) {
+      autoSeededRef.current = true;
+      generateGuestSampleData()
+        .then(() => {
+          toast.success("Loaded guest sample data automatically");
+        })
+        .catch(() => {
+          autoSeededRef.current = false;
+          toast.error("Failed to auto-load guest sample data");
+        });
+    }
+  }, [isLoading, isAuthenticated, students, generateGuestSampleData]);
 
   if (isLoading) {
     return (
