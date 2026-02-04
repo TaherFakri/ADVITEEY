@@ -1,257 +1,123 @@
-## Overview
+# 🎓 RiskWise  
+## AI-Based Dropout Prediction & Counselling System
 
-This project uses the following tech stack:
-- Vite
-- Typescript
-- React Router v7 (all imports from `react-router` instead of `react-router-dom`)
-- React 19 (for frontend components)
-- Tailwind v4 (for styling)
-- Shadcn UI (for UI components library)
-- Lucide Icons (for icons)
-- Convex (for backend & database)
-- Convex Auth (for authentication)
-- Framer Motion (for animations)
-- Three js (for 3d models)
+<p align="center">
+  <img src="https://img.shields.io/badge/SIH-2025-blue?style=for-the-badge" alt="SIH 2025"/>
+  <img src="https://img.shields.io/badge/Top%203-Internal%20Hackathon-success?style=for-the-badge" alt="Top 3"/>
+  <img src="https://img.shields.io/badge/Status-Prototype%20Live-orange?style=for-the-badge" alt="Status"/>
+</p>
 
-All relevant files live in the 'src' directory.
+<p align="center">
+  <a href="https://riskwise.vly.site"><strong>🚀 Live Prototype</strong></a>
+</p>
 
-Use pnpm for the package manager.
+---
 
-## Setup
+## 📌 Overview
 
-This project is set up already and running on a cloud environment, as well as a convex development in the sandbox.
+**RiskWise** is a full-stack AI platform developed for **Smart India Hackathon 2025 (SIH25102)**. Our mission is to **predict student dropout risk early** and facilitate **timely counselling, alerts, and interventions**.
 
-## Environment Variables
+The platform provides **role-based dashboards**, **AI-driven risk prediction**, **explainable insights (XAI)**, and **automated support workflows** tailored for students, mentors, institutions, parents, and policymakers.
 
-The project is set up with project specific CONVEX_DEPLOYMENT and VITE_CONVEX_URL environment variables on the client side.
+---
 
-The convex server has a separate set of environment variables that are accessible by the convex backend.
+## 🏆 Hackathon Details
 
-Currently, these variables include auth-specific keys: JWKS, JWT_PRIVATE_KEY, and SITE_URL.
+| Attribute | Details |
+| :--- | :--- |
+| **Event** | Smart India Hackathon 2025 |
+| **Theme** | Smart Automation |
+| **Category** | Software |
+| **Problem Statement** | AI-based Dropout Prediction & Counselling System |
+| **Team** | ADVITEEY |
+| **Achievement** | 🥉 Top 3 – Internal Hackathon |
 
+---
 
-# Using Authentication (Important!)
+## ✨ Key Features
 
-You must follow these conventions when using authentication.
+* 🔐 **Secure Access:** Email OTP & Anonymous Authentication.
+* 📊 **Role-Based Dashboards:** Custom views for Students, Mentors, and Admins.
+* 🧠 **AI Risk Engine:** Real-time dropout risk prediction using machine learning.
+* 🔍 **Explainable AI:** XAI-ready logic to provide reasons behind risk scores.
+* 💬 **24/7 Support:** AI-powered counselling chatbot for immediate student assistance.
+* 💸 **Financial Aid:** Built-in Scholarship Recommendation Engine.
+* 🔔 **Smart Alerts:** Automated notifications for stakeholders when risk levels fluctuate.
+* 📱 **Modern UI:** Mobile-first design with fluid Framer Motion animations.
 
-## Auth is already set up.
+---
 
-All convex authentication functions are already set up. The auth currently uses email OTP and anonymous users, but can support more.
+## 🧱 System Architecture
 
-The email OTP configuration is defined in `src/convex/auth/emailOtp.ts`. DO NOT MODIFY THIS FILE.
-
-Also, DO NOT MODIFY THESE AUTH FILES: `src/convex/auth.config.ts` and `src/convex/auth.ts`.
-
-## Using Convex Auth on the backend
-
-On the `src/convex/users.ts` file, you can use the `getCurrentUser` function to get the current user's data.
-
-## Using Convex Auth on the frontend
-
-The `/auth` page is already set up to use auth. Navigate to `/auth` for all log in / sign up sequences.
-
-You MUST use this hook to get user data. Never do this yourself without the hook:
-```typescript
-import { useAuth } from "@/hooks/use-auth";
-
-const { isLoading, isAuthenticated, user, signIn, signOut } = useAuth();
-```
-
-## Protected Routes
-
-When protecting a page, use the auth hooks to check for authentication and redirect to /auth.
-
-## Auth Page
-
-The auth page is defined in `src/pages/Auth.tsx`. Redirect authenticated pages and sign in / sign up to /auth.
-
-## Authorization
-
-You can perform authorization checks on the frontend and backend.
-
-On the frontend, you can use the `useAuth` hook to get the current user's data and authentication state.
-
-You should also be protecting queries, mutations, and actions at the base level, checking for authorization securely.
-
-## Adding a redirect after auth
-
-In `src/main.tsx`, you must add a redirect after auth URL to redirect to the correct dashboard/profile/page that should be created after authentication.
-
-# Frontend Conventions
-
-You will be using the Vite frontend with React 19, Tailwind v4, and Shadcn UI.
-
-Generally, pages should be in the `src/pages` folder, and components should be in the `src/components` folder.
-
-Shadcn primitives are located in the `src/components/ui` folder and should be used by default.
-
-## Page routing
-
-Your page component should go under the `src/pages` folder.
-
-When adding a page, update the react router configuration in `src/main.tsx` to include the new route you just added.
-
-## Shad CN conventions
-
-Follow these conventions when using Shad CN components, which you should use by default.
-- Remember to use "cursor-pointer" to make the element clickable
-- For title text, use the "tracking-tight font-bold" class to make the text more readable
-- Always make apps MOBILE RESPONSIVE. This is important
-- AVOID NESTED CARDS. Try and not to nest cards, borders, components, etc. Nested cards add clutter and make the app look messy.
-- AVOID SHADOWS. Avoid adding any shadows to components. stick with a thin border without the shadow.
-- Avoid skeletons; instead, use the loader2 component to show a spinning loading state when loading data.
-
-
-## Landing Pages
-
-You must always create good-looking designer-level styles to your application. 
-- Make it well animated and fit a certain "theme", ie neo brutalist, retro, neumorphism, glass morphism, etc
-
-Use known images and emojis from online.
-
-If the user is logged in already, show the get started button to say "Dashboard" or "Profile" instead to take them there.
-
-## Responsiveness and formatting
-
-Make sure pages are wrapped in a container to prevent the width stretching out on wide screens. Always make sure they are centered aligned and not off-center.
-
-Always make sure that your designs are mobile responsive. Verify the formatting to ensure it has correct max and min widths as well as mobile responsiveness.
-
-- Always create sidebars for protected dashboard pages and navigate between pages
-- Always create navbars for landing pages
-- On these bars, the created logo should be clickable and redirect to the index page
-
-## Animating with Framer Motion
-
-You must add animations to components using Framer Motion. It is already installed and configured in the project.
-
-To use it, import the `motion` component from `framer-motion` and use it to wrap the component you want to animate.
-
-
-### Other Items to animate
-- Fade in and Fade Out
-- Slide in and Slide Out animations
-- Rendering animations
-- Button clicks and UI elements
-
-Animate for all components, including on landing page and app pages.
-
-## Three JS Graphics
-
-Your app comes with three js by default. You can use it to create 3D graphics for landing pages, games, etc.
-
-
-## Colors
-
-You can override colors in: `src/index.css`
-
-This uses the oklch color format for tailwind v4.
-
-Always use these color variable names.
-
-Make sure all ui components are set up to be mobile responsive and compatible with both light and dark mode.
-
-Set theme using `dark` or `light` variables at the parent className.
-
-## Styling and Theming
-
-When changing the theme, always change the underlying theme of the shad cn components app-wide under `src/components/ui` and the colors in the index.css file.
-
-Avoid hardcoding in colors unless necessary for a use case, and properly implement themes through the underlying shad cn ui components.
-
-When styling, ensure buttons and clickable items have pointer-click on them (don't by default).
-
-Always follow a set theme style and ensure it is tuned to the user's liking.
-
-## Toasts
-
-You should always use toasts to display results to the user, such as confirmations, results, errors, etc.
-
-Use the shad cn Sonner component as the toaster. For example:
+### High-Level Logic
+```mermaid
+graph TD
+    A[React 19 + Vite Frontend] -->|Queries / Mutations| B[Convex Backend]
+    B --> C[Authentication & RBAC]
+    B --> D[Database]
+    B --> E[AI Risk Engine]
+    E --> F[Counselling Engine]
+    E --> G[Alerts & Notifications]
 
 ```
-import { toast } from "sonner"
+## 🔄 User Flow
 
-import { Button } from "@/components/ui/button"
-export function SonnerDemo() {
-  return (
-    <Button
-      variant="outline"
-      onClick={() =>
-        toast("Event has been created", {
-          description: "Sunday, December 03, 2023 at 9:00 AM",
-          action: {
-            label: "Undo",
-            onClick: () => console.log("Undo"),
-          },
-        })
-      }
-    >
-      Show Toast
-    </Button>
-  )
-}
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant A as Auth
+    participant D as Dashboard
+    participant AI as AI_Engine
+
+    U->>A: Login OTP or Anonymous
+    A->>D: Session Created
+    D->>AI: Request Risk Score
+    AI->>D: Risk and Explanation
+    D->>U: Insights Alerts and Counselling
 ```
+    
+## 🛠 Tech Stack
 
-Remember to import { toast } from "sonner". Usage: `toast("Event has been created.")`
+### Frontend
+- **Framework:** React 19 + Vite  
+- **Language:** TypeScript  
+- **Routing:** React Router v7  
+- **Styling:** Tailwind CSS v4 (OKLCH), Shadcn UI  
+- **Animations:** Framer Motion, Three.js  
+- **Icons:** Lucide Icons  
 
-## Dialogs
+---
 
-Always ensure your larger dialogs have a scroll in its content to ensure that its content fits the screen size. Make sure that the content is not cut off from the screen.
+### Backend & Database
+- **Platform:** Convex  
+  - Real-time Database  
+  - Queries  
+  - Mutations  
+  - Actions  
+- **Authentication:** Convex Auth  
+  - Email OTP  
+  - Anonymous Login  
 
-Ideally, instead of using a new page, use a Dialog instead. 
+---
 
-# Using the Convex backend
+### AI / ML Layer
+- Dropout risk prediction models  
+- Explainable AI (XAI) logic  
+- Counselling & recommendation pipelines  
 
-You will be implementing the convex backend. Follow your knowledge of convex and the documentation to implement the backend.
+---
 
-## The Convex Schema
+## 📂 Project Structure
 
-You must correctly follow the convex schema implementation.
-
-The schema is defined in `src/convex/schema.ts`.
-
-Do not include the `_id` and `_creationTime` fields in your queries (it is included by default for each table).
-Do not index `_creationTime` as it is indexed for you. Never have duplicate indexes.
-
-
-## Convex Actions: Using CRUD operations
-
-When running anything that involves external connections, you must use a convex action with "use node" at the top of the file.
-
-You cannot have queries or mutations in the same file as a "use node" action file. Thus, you must use pre-built queries and mutations in other files.
-
-You can also use the pre-installed internal crud functions for the database:
-
-```ts
-// in convex/users.ts
-import { crud } from "convex-helpers/server/crud";
-import schema from "./schema.ts";
-
-export const { create, read, update, destroy } = crud(schema, "users");
-
-// in some file, in an action:
-const user = await ctx.runQuery(internal.users.read, { id: userId });
-
-await ctx.runMutation(internal.users.update, {
-  id: userId,
-  patch: {
-    status: "inactive",
-  },
-});
-```
-
-
-## Common Convex Mistakes To Avoid
-
-When using convex, make sure:
-- Document IDs are referenced as `_id` field, not `id`.
-- Document ID types are referenced as `Id<"TableName">`, not `string`.
-- Document object types are referenced as `Doc<"TableName">`.
-- Keep schemaValidation to false in the schema file.
-- You must correctly type your code so that it passes the type checker.
-- You must handle null / undefined cases of your convex queries for both frontend and backend, or else it will throw an error that your data could be null or undefined.
-- Always use the `@/folder` path, with `@/convex/folder/file.ts` syntax for importing convex files.
-- This includes importing generated files like `@/convex/_generated/server`, `@/convex/_generated/api`
-- Remember to import functions like useQuery, useMutation, useAction, etc. from `convex/react`
-- NEVER have return type validators.
+```bash
+src/
+ ├─ components/
+ │   └─ ui/              # Reusable Shadcn components
+ ├─ pages/               # Application views & routes
+ ├─ hooks/               # Custom React hooks (Auth, Theme, etc.)
+ ├─ convex/              # Backend schema and server functions
+ │   ├─ auth/            # Core Auth Logic (Internal)
+ │   ├─ schema.ts        # Database Schema
+ │   └─ users.ts         # User-related Mutations & Queries
+ ├─ styles/              # Global CSS and Tailwind config
+ └─ main.tsx             # Application entry point
